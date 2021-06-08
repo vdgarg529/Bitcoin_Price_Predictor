@@ -1,5 +1,4 @@
 from flask import Flask, jsonify
-# from flask_ngrok import run_with_ngrok
 from requests import Request, Session
 from requests.exceptions import ConnectionError, Timeout, TooManyRedirects
 import json
@@ -20,21 +19,12 @@ Prev_1_date=today-span1
 next_date=today+span1
 
 app=Flask(__name__)
-# run_with_ngrok(app)
-# TCS_model=load_model("TCS_model.h5")
-# TCS_scaler=load(open("TCS_scaler.pkl","rb"))
 NIFTY50_model=load_model("NIFTY50_model.h5")
 NIFTY50_scaler=load(open("NIFTY50_scaler.pkl","rb"))
 NIFTYBANK_model=load_model("NIFTYBANK_model.h5")
 NIFTYBANK_scaler=load(open("NIFTYBANK_scaler.pkl","rb"))
 NIFTYIT_model=load_model("NIFTYIT_model.h5")
 NIFTYIT_scaler=load(open("NIFTYIT_scaler.pkl","rb"))
-# TECHMAHINDRA_model=load_model("TECHMAHINDRA_model.h5")
-# TECHMAHINDRA_scaler=load(open("TECHMAHINDRA_scaler.pkl","rb"))
-# BHARTIAIRTEL_model=load_model("BHARTIAIRTEL_model.h5")
-# BHARTIAIRTEL_scaler=load(open("BHARTIAIRTEL_scaler.pkl","rb"))
-# TATAMOTORS_model=load_model("TATAMOTORS_model.h5")
-# TATAMOTORS_scaler=load(open("TATAMOTORS_scaler.pkl","rb"))
 def predict(name): 
   quote=web.DataReader(name,data_source='yahoo',start='2012-01-01', end=str(Prev_1_date))
   new_df=quote.filter(['Close'])
@@ -61,12 +51,7 @@ def main():
         "Bitcoin":"/CRYPTO/BITCOIN",
         "NIFT 50 Stocks":"/STOCKS/NIFTY50",
         "NIFT BANK Stocks":"/STOCKS/NIFTYBANK",
-        "NIFT IT Stocks":"/STOCKS/NIFTYIT",
-        "NIFT TCS Stocks":"/STOCKS/TCS",
-        "NIFT TATA MOTORS Stocks":"/STOCKS/TATAMOTORS",
-        "NIFT TECH MAHINDRA Stocks":"/STOCKS/TECHMAHINDRA",
-        "NIFT BHARTI AIRTEL Stocks":"/STOCKS/BHARTIAIRTEL",
-        
+        "NIFT IT Stocks":"/STOCKS/NIFTYIT"
     }
     return jsonify(result)
 
@@ -94,26 +79,12 @@ def bitcoin():
     except(ConnectionError, Timeout, TooManyRedirects) as e:
         print(e)
     loaded_model=load(open("bitcoin_predictor.pkl","rb"))
-    #print(loaded_model.predict(price_array))
     result={
         "Type":"Bit-Coin",
         str(today):int(price_array),
         str(Next_30_date):int(loaded_model.predict(price_array))
     }
     return jsonify(result)
-# @app.route('/STOCKS/TCS')
-# def TCS():
-#     model=TCS_model
-    
-#     test=test_data('TCS.NS')
-#     next=predict('TCS.NS')
-#     dte=last15dates()
-    
-#     result={
-#         "Type":"Stock-TCS",
-#         str(next_date):int(next)
-#     }
-#     return jsonify(result)
 @app.route('/STOCKS/NIFTY50')
 def NIFTY50():
     model=NIFTY50_model
@@ -153,49 +124,6 @@ def NIFTYIT():
         str(next_date):int(next)
     }
     return jsonify(result)
-# @app.route('/STOCKS/TECHMAHINDRA')
-# def TECHMAHINDRA():
-#     model=TECHMAHINDRA_model
-    
-#     test=test_data('TECHM.NS')
-#     next=predict('TECHM.NS')
-#     dte=last15dates()
-    
-#     result={
-#         "Type":"Stock-TECH-MAHINDRA-LIMITED",
-#         str(next_date):int(next)
-#     }
-#     return jsonify(result)
-# @app.route('/STOCKS/BHARTIAIRTEL')
-# def BHARTIAIRTEL():
-#     model=BHARTIAIRTEL_model
-    
-#     test=test_data('BHARTIARTL.NS')
-#     next=predict('BHARTIARTL.NS')
-#     dte=last15dates()
-    
-#     result={
-#         "Type":"Stock-BHARTI-AIRTEL",
-#         str(next_date):int(next)
-#     }
-#     return jsonify(result)
-# @app.route('/STOCKS/TATAMOTORS')
-# def TATAMOTORS():
-#     model=TATAMOTORS_model
-    
-#     test=test_data('TATAMOTORS.NS')
-#     next=predict('TATAMOTORS.NS')
-#     dte=last15dates()
-    
-#     result={
-#         "Type":"Stock-TATA-MOTORS",
-#         str(next_date):int(next)
-#     }
-#     return jsonify(result)
-
-
-
      
-
 if __name__=="__main__":
     app.run()
