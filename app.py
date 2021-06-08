@@ -1,5 +1,4 @@
 from flask import Flask, jsonify
-from flask_ngrok import run_with_ngrok
 from requests import Request, Session
 from requests.exceptions import ConnectionError, Timeout, TooManyRedirects
 import json
@@ -20,7 +19,6 @@ Prev_1_date=today-span1
 next_date=today+span1
 
 app=Flask(__name__)
-run_with_ngrok(app)
 TCS_model=load_model("TCS_model.h5")
 TCS_scaler=load(open("TCS_scaler.pkl","rb"))
 NIFTY50_model=load_model("NIFTY50_model.h5")
