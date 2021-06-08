@@ -6,7 +6,7 @@ import numpy as np
 from requests.sessions import session
 from pickle import load
 app=Flask(__name__)
-@app.route('/')
+@app.route('/',methods=["Get"])
 def main():
     url='https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest'
     parameters={
