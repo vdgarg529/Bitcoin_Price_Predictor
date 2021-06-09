@@ -7,7 +7,7 @@ import pandas_datareader as web
 import numpy as np
 from requests.sessions import session
 from pickle import load
-from keras.models import load_model
+#from keras.models import load_model
 import datetime
 today = datetime.date.today()
 span30 = datetime.timedelta(days=30)
