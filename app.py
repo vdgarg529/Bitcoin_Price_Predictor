@@ -7,7 +7,6 @@ import pandas_datareader as web
 import numpy as np
 from requests.sessions import session
 from pickle import load
-import tensorflow as tf
 from tensorflow.keras.models import load_model
 import datetime
 today = datetime.date.today()
